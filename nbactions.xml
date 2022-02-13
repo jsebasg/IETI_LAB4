@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<actions>
+        <action>
+            <actionName>run</actionName>
+            <packagings>
+                <packaging>jar</packaging>
+            </packagings>
+            <goals>
+                <goal>process-classes</goal>
+                <goal>org.codehaus.mojo:exec-maven-plugin:1.5.0:exec</goal>
+            </goals>
+            <properties>
+                <exec.args>-classpath %classpath ${packageClassName}</exec.args>
+                <exec.executable>java</exec.executable>
+                <Env.MONGODB_URI>mongodb+srv://sebs:clave123@sebscluster.xobg1.mongodb.net/myFirstDatabase?retryWrites=true&amp;w=majority</Env.MONGODB_URI>
+            </properties>
+        </action>
+    </actions>
