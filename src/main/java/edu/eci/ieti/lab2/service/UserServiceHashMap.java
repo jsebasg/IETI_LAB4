@@ -1,6 +1,7 @@
 package edu.eci.ieti.lab2.service;
 
 import edu.eci.ieti.lab2.data.User;
+import edu.eci.ieti.lab2.dto.UserDto;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -41,6 +42,11 @@ public class UserServiceHashMap implements UserService{
     }
 
     @Override
+    public User update(UserDto userDto) {
+        return null;
+    }
+
+    @Override
     public List<User> findUsersWithNameOrLastNameLike(String queryText) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
@@ -48,5 +54,10 @@ public class UserServiceHashMap implements UserService{
     @Override
     public List<User> findUsersCreatedAfter(Date startDate) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public User findByEmail(String email) {
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 }

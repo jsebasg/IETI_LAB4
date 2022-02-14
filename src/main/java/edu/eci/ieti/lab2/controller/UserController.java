@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.security.RolesAllowed;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -30,38 +31,31 @@ public class UserController {
     }
 
     @GetMapping
+    @RolesAllowed("ADMIN")
     public ResponseEntity<List<User>> getAll() {
-
         return new ResponseEntity<List<User>>(userService.getAll() , HttpStatus.OK );
-
     }
 
     @GetMapping( "/{id}" )
     public ResponseEntity<User> findById(@PathVariable String id ) {
-
-
         return new ResponseEntity<User>(userService.findById(id) , HttpStatus.OK );
     }
 
 
     @PostMapping
     public ResponseEntity<User> create( @RequestBody UserDto userDto ) {
-        User userCreation = new User((Integer.toString((int) counter.incrementAndGet())), userDto.getName() , userDto.getEmail() ,
-                userDto.getLastName() , Date.from(Instant.now()));
+        User userCreation = new User(userDto);
         return new ResponseEntity<User>(userService.create(userCreation), HttpStatus.OK );
+
     }
 
     @PutMapping( "/{id}" )
     public ResponseEntity<User> update( @RequestBody UserDto userDto, @PathVariable String id ) {
-        User user = userService.findById(id);
-        user.setEmail(userDto.getEmail());
-        user.setName(userDto.getName());
-        user.setLastName(userDto.getLastName());
-        return new ResponseEntity<User>(userService.update(user , id ), HttpStatus.OK );
-
+        return new ResponseEntity<User>( userService.update(userDto) , HttpStatus.OK);
     }
 
     @DeleteMapping( "/{id}" )
+
     public ResponseEntity<Boolean> delete( @PathVariable String id ) {
         try{
             userService.deleteById(id);

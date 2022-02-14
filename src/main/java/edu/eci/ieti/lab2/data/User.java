@@ -1,10 +1,16 @@
 package edu.eci.ieti.lab2.data;
 
+import edu.eci.ieti.lab2.dto.UserDto;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.security.crypto.bcrypt.BCrypt;
 
+import java.time.Instant;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
+
 @Document
 public class User {
     @Id
@@ -16,9 +22,24 @@ public class User {
     String lastName;
     String name;
     Date createdAt;
+    private String passwordHash;
+    private List<RoleEnum> roles;
 
     public User()
     {
+    }
+    public User(UserDto userDto){
+        this.passwordHash = BCrypt.hashpw(userDto.getPassword(), BCrypt.gensalt());
+        this.name = userDto.getName();
+        this.lastName = userDto.getLastName();
+        this.email = userDto.getEmail();
+        this.createdAt = Date.from(Instant.now());
+        this.roles = new ArrayList<>() ;
+        if(userDto.getRole() == 0) {
+            roles.add(RoleEnum.ADMIN);
+        }else {
+            roles.add(RoleEnum.USER);
+        }
     }
 
     public User(String id , String name, String email, String lastName, Date createdAt) {
@@ -27,6 +48,23 @@ public class User {
         this.email = email;
         this.lastName = lastName;
         this.createdAt = createdAt;
+    }
+
+
+    public String getPasswordHash() {
+        return passwordHash;
+    }
+
+    public void setPasswordHash(String passwordHash) {
+        this.passwordHash = passwordHash;
+    }
+
+    public List<RoleEnum> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(List<RoleEnum> roles) {
+        this.roles = roles;
     }
 
     public String getId() {

@@ -59,8 +59,20 @@ public class UserServiceMongoDB implements UserService {
             actualUser.setName(user.getName());
             userRepository.save(actualUser); 
             return actualUser; 
-        } 
+        }
         return null; 
+    }
+    @Override
+    public User update(UserDto userDto) {
+        if(userRepository.existsById(userDto.getId())) {
+            User actualUser = userRepository.findById(userDto.getId()).get();
+            actualUser.setEmail(userDto.getEmail());
+            actualUser.setName(userDto.getName());
+            actualUser.setLastName(userDto.getLastName());
+            userRepository.save(actualUser);
+            return actualUser;
+        }
+        return null;
     }
 
     @Override
@@ -74,6 +86,11 @@ public class UserServiceMongoDB implements UserService {
     @Override
     public List<User> findUsersCreatedAfter(Date startDate) {
         return userRepository.findBycreatedAtAfter(startDate) ; 
+    }
+
+    @Override
+    public User findByEmail(String email) {
+        return userRepository.findByEmail(email);
     }
 
 }
